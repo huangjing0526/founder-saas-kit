@@ -1,0 +1,39 @@
+{
+  "name": "founder-saas-kit",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "author": "Jing",
+  "repository": {
+    "type": "git",
+    "url": "<your-repo-url>"
+  },
+  "//repository": "建好远端仓库后把 <your-repo-url> 换成真实地址（如 https://github.com/<you>/founder-saas-kit）。",
+  "keywords": [
+    "claude-code",
+    "ai-coding",
+    "saas",
+    "founder",
+    "governance",
+    "skills",
+    "engineering-guardrails",
+    "cursor",
+    "codex",
+    "agents"
+  ],
+  "description": "Founder SaaS Kit —— 面向非技术 founder 的「工程护城河」模板 kit：可抄的质量门禁脚本（密钥/断链/结构/schema/i18n）、CI 模板、健康度审计。这是模板，不是运行时库——零运行时依赖，所有质量脚本纯 Node（fs + 正则），接入你项目时按各脚本顶部「可配置区」改。",
+  "//deps": "★零运行时依赖：所有 quality-scripts 只用 Node 内置模块（fs / path / child_process），不装任何 npm 包，故无 dependencies/devDependencies。接入真项目后，你自己的依赖加进你项目的 package.json，不要污染本模板。",
+  "//scripts": "把 npm script 名 ↔ engineering/quality-scripts/ 下脚本文件接起来。harness.mjs / health-audit.cjs / ci.example.yml 调的就是这些名字。用不到的删，缺的栈别删脚本只删这里的映射。",
+  "scripts": {
+    "lint:secrets": "node engineering/quality-scripts/check-secrets.cjs .",
+    "lint:docs-links": "node engineering/quality-scripts/check-docs-links.cjs .",
+    "check:structure": "node engineering/quality-scripts/check-project-structure.js",
+    "lint:schema": "node engineering/quality-scripts/check-schema-text.cjs",
+    "lint:migration": "node engineering/quality-scripts/check-migration-drift.cjs",
+    "lint:i18n-parity": "node engineering/quality-scripts/check-i18n-parity.cjs",
+    "harness": "node engineering/quality-scripts/harness.mjs",
+    "audit:health": "node engineering/quality-scripts/health-audit.cjs",
+    "test:guards": "node engineering/enforcement/hooks/guard.test.cjs",
+    "test": "npm run test:guards && echo \"（占位）再配置你的应用测试，例如 vitest run / jest / node --test\" && exit 0"
+  }
+}

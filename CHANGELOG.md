@@ -6,7 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ## [Unreleased]
 
 ### Added
-- **Evolvability: self-claim verification.** New `check-self-claims.cjs` (wired into `harness` as step 7/7) asserts the hard numbers printed in the READMEs/badges — guard-test count, harness step count, runtime-dependency count — equal reality, so they can never silently drift. Applies the kit's own anti-drift principle to itself.
+- **Evolvability: self-claim verification.** New `check-self-claims.cjs` (wired into `harness`) asserts the stable, meaningful numbers printed in the READMEs/badges — guard-test count and runtime-dependency count — equal reality, so they can never silently drift. (Deliberately does not assert volatile internal counts like the harness step count; the first screen now says "all quality gates green" instead of a number that changes every time a gate is added.)
+- **Evolvability: MAP index anti-rot.** New `check-map-index.cjs` (wired into `harness`) verifies every doc (`.md`) is linked from `MAP.md` and every `MAP.md` link resolves — so the single-page index can't drift from the actual file tree as the kit grows.
 - English `README.md` as the primary entry, with the Chinese version moved to `README.zh-CN.md` and a language switcher linking the two.
 - First-screen verification metrics + status badges (license / node / runtime deps / guard tests / PRs welcome).
 - Community health files: `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, `ROADMAP.md`, this `CHANGELOG.md`, and `MAP.md` (single-page repository index).

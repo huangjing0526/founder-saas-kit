@@ -11,7 +11,7 @@
 > 写第一行代码前,把**工程约束、AI 协作方式、上线检查**一次配好。
 > 让 AI(Claude Code / Codex / Cursor)在你的项目里"不乱写代码"。
 
-> 🛡️ **守卫自测 42/42** · **harness 7 步全绿** · **内部文档链 0 断** · 提纯自 **4 个月** 真实多租户 SaaS CRM · **零运行时依赖**
+> 🛡️ **守卫自测 42/42** · **门禁全绿** · **内部文档链 0 断** · 提纯自 **4 个月** 真实多租户 SaaS CRM · **零运行时依赖**
 
 这不是又一个技术栈模板。满网都有"Next.js + Supabase 启动器"。
 这套 kit 解决的是上一层问题:**怎么让 AI 写出的系统不在上线时翻车。**
@@ -65,7 +65,7 @@ npm run demo
 
 演示:AI 想跑 `rm -rf /` → 🛑 守卫拦下 · 普通命令 → ✅ 放行 · 想改 `.env`/私钥/CI 文件 → 🛑 拦下 · 一个密钥溜进代码 → 🔦 扫描器抓出并打码 · 守卫回归自测 **42/42**。全程安全——危险命令只**喂给守卫看它拦不拦,从不真的执行**。
 
-> **本 kit 用自己治理自己**(dogfooding):提交守自己的 Git 纪律、根目录 [`AGENTS.md`](AGENTS.md) 即它对外的跨工具约定、CI([`.github/workflows/ci.yml`](.github/workflows/ci.yml))跑的就是它自带的门禁脚本(`npm run harness` 7 步全绿、内部文档链 0 可重指向断链)。工具信自己,才值得你信。
+> **本 kit 用自己治理自己**(dogfooding):提交守自己的 Git 纪律、根目录 [`AGENTS.md`](AGENTS.md) 即它对外的跨工具约定、CI([`.github/workflows/ci.yml`](.github/workflows/ci.yml))跑的就是它自带的门禁脚本(`npm run harness` 全绿、内部文档链 0 可重指向断链)。工具信自己,才值得你信。
 
 ---
 

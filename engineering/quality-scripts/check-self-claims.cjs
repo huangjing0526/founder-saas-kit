@@ -11,8 +11,10 @@
  *
  * 校验项（真相源 → 文档里被断言的写法）：
  *   1. 守卫自测数   ← 跑 guard.test.cjs 解析「N/N 通过」    → badge `guard%20tests-N%2FN` + 首屏「N/N」「守卫自测 N/N」
- *   2. harness 步数 ← 数 harness.mjs STEPS（不含集成）       → 首屏「harness N/N green」「harness N 步全绿」
- *   3. 运行时依赖数 ← package.json deps + devDeps 个数        → badge `runtime%20deps-0` + 首屏「zero / 零」
+ *   2. 运行时依赖数 ← package.json deps + devDeps 个数        → badge `runtime%20deps-0` + 首屏「zero / 零」
+ *
+ * 刻意只校验「稳定且有意义」的宣称数（守卫数、依赖数）——不校验 harness 步数那种「一加 check 就变」
+ * 的内部计数：首屏不该写易变的内部数（否则每加一步门禁都要改 README）。要长期可演进，宣称稳定证据。
  *
  * 用法：node quality-scripts/check-self-claims.cjs [kitRoot]
  *   路径解析：优先命令行第一个非 -- 参数，否则用 cwd（= npm 运行处 = kit 根）。
@@ -45,17 +47,7 @@ function actualGuardTests() {
   return { pass: Number(m[1]), total: Number(m[2]) }
 }
 
-// ── 真相源 2：实际 harness 步数（不含集成）─────────────────────────────────
-function actualHarnessSteps() {
-  const src = read(path.join(qs, 'harness.mjs'))
-  if (!src) return null
-  // STEPS 字面量里每个步骤一行 `script: '...'`；集成步骤是 STEPS.push 进去的，单独排除。
-  const all = (src.match(/script:\s*'[^']+'/g) || []).length
-  const integration = (src.match(/script:\s*'test:integration'/g) || []).length
-  return all - integration
-}
-
-// ── 真相源 3：实际运行时依赖数 ─────────────────────────────────────────────
+// ── 真相源 2：实际运行时依赖数 ─────────────────────────────────────────────
 function actualDeps() {
   const pkg = read(path.join(root, 'package.json'))
   if (!pkg) return null
@@ -64,7 +56,6 @@ function actualDeps() {
 }
 
 const guard = actualGuardTests()
-const steps = actualHarnessSteps()
 const deps = actualDeps()
 
 // ── 文档里被断言的写法：每条 = 在哪个文件、用什么正则抓「写死的值」、该等于哪个真值 ──
@@ -75,16 +66,13 @@ const CLAIMS = [
   { file: 'README.md', re: /Guard self-tests\s*\*?\*?(\d+)\//, want: () => guard && guard.total, label: 'README 首屏 守卫自测' },
   { file: 'README.zh-CN.md', re: /guard%20tests-(\d+)%2F(\d+)/, want: () => guard && guard.total, label: 'README.zh badge 守卫自测' },
   { file: 'README.zh-CN.md', re: /守卫自测\s*\*?\*?(\d+)\//, want: () => guard && guard.total, label: 'README.zh 首屏 守卫自测' },
-  // harness 步数（EN「harness 6/6 green」/ ZH「harness 6 步全绿」）
-  { file: 'README.md', re: /harness\s*\*?\*?(\d+)\/\d+\s*green/i, want: () => steps, label: 'README 首屏 harness 步数' },
-  { file: 'README.zh-CN.md', re: /harness\s*\*?\*?(\d+)\s*步全绿/, want: () => steps, label: 'README.zh 首屏 harness 步数' },
   // 运行时依赖（badge runtime%20deps-0）
   { file: 'README.md', re: /runtime%20deps-(\d+)/, want: () => deps, label: 'README badge 运行时依赖' },
   { file: 'README.zh-CN.md', re: /runtime%20deps-(\d+)/, want: () => deps, label: 'README.zh badge 运行时依赖' },
 ]
 
 console.log(`🔎 自我宣称校验（${root}）`)
-console.log(`   真相源：守卫自测=${guard ? `${guard.pass}/${guard.total}` : '?'} · harness 步数=${steps ?? '?'} · 运行时依赖=${deps ?? '?'}\n`)
+console.log(`   真相源：守卫自测=${guard ? `${guard.pass}/${guard.total}` : '?'} · 运行时依赖=${deps ?? '?'}\n`)
 
 const failures = []
 let checked = 0

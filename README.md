@@ -11,7 +11,7 @@
 > Before you write the first line of code, configure your **engineering guardrails, AI-collaboration rules, and pre-launch checks** — once.
 > Keep AI (Claude Code / Codex / Cursor) from going off-script in your project.
 
-> 🛡️ **Guard self-tests 42/42** · **harness 7/7 green** · **0 broken internal doc links** · distilled from **4 months** of a real multi-tenant SaaS CRM · **zero runtime dependencies**
+> 🛡️ **Guard self-tests 42/42** · **all quality gates green** · **0 broken internal doc links** · distilled from **4 months** of a real multi-tenant SaaS CRM · **zero runtime dependencies**
 
 This is not yet another stack template. The web is full of "Next.js + Supabase starters."
 This kit solves the layer above that: **how to keep what the AI builds from breaking when you ship.**
@@ -64,7 +64,7 @@ npm run demo
 
 The demo: AI tries to run `rm -rf /` → 🛑 guard blocks it · a normal command → ✅ allowed · AI tries to edit `.env` / a private key / a CI file → 🛑 blocked · a secret slips into the code → 🔦 the scanner catches and masks it · guard regression self-test **42/42**. All safe — dangerous commands are only **fed to the guard to see whether it blocks them, never actually executed.**
 
-> **This kit governs itself** (dogfooding): commits obey its own Git discipline; the root [`AGENTS.md`](AGENTS.md) is its cross-tool contract; CI ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) runs the very gate scripts it ships (`npm run harness` 7/7 green, 0 redirectable broken internal links). A tool that trusts itself is one you can trust.
+> **This kit governs itself** (dogfooding): commits obey its own Git discipline; the root [`AGENTS.md`](AGENTS.md) is its cross-tool contract; CI ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) runs the very gate scripts it ships (`npm run harness` all green, 0 redirectable broken internal links). A tool that trusts itself is one you can trust.
 
 ---
 

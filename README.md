@@ -137,7 +137,7 @@ petitive overy           baseline itecture  engineering/ + ops/      spective
 | **engineering/** `governance-skills/` | 11 governance skills (S1-S11) + 8-section template + business-skill sample + runnable eval | Generic after redaction |
 | **engineering/** `enforcement/` | `guard-dangerous-bash` / `guard-high-risk-edit` two guards (+ `guard.test.cjs` self-test) + 3 read-only reviewer subagents + mounting guide | Generic |
 | **engineering/** `quality-scripts/` | `check-secrets` (secret scan) / `check-docs-links` / `check-project-structure` / `check-i18n-parity` etc. + `harness` + `health-audit` + **MECHANISMS.md (5 mechanisms)** | Cross-/same-stack |
-| `.github/workflows/ci.example.yml` · `package.json` | Copy-paste CI red-line gate template + npm-script↔script wiring (makes "wire it into CI" real) | Generic |
+| `.github/ci.example.yml` · `package.json` | Copy-paste CI red-line gate template (lives outside `workflows/` so GitHub won't auto-run the template) + npm-script↔script wiring | Generic |
 | **engineering/** `methodology/` | `anti-drift` (5 anti-drift principles, highest value) / `north-star-rules` / `common-pitfalls` / incident-ledger skeleton | Generic |
 | **engineering/** `registries/` | `business-rules-registry` + `production-readiness-registry`, two living-ledger templates | Generic |
 | `ops/` **operations & collaboration** | 5 sub-groups: `collaboration/` (AI roles · unattended handoff · onboarding · session memory) · `cadence/` (weekly check 5+5 · hours tally · daily/monthly/quarterly rhythm) · `decisions/` (multi-view decisions · decision log ADR · glossary) · `run/` (tech ops: incidents · backup + drills · monitoring · dependency security · cost · release) · `business/` (business ops: CS · feedback loop · billing · GDPR compliance · SLA status page · churn warning) | Generic |
@@ -177,7 +177,7 @@ cp -r engineering/enforcement/subagents/*.md .claude/agents/
 # 3. Wire up the quality gates (pick by your stack)
 cp engineering/quality-scripts/check-*.cjs engineering/quality-scripts/check-*.js scripts/   # note: check-project-structure is .js
 cp engineering/quality-scripts/harness.mjs engineering/quality-scripts/health-audit.cjs scripts/
-cp package.json ./   # or merge its scripts section into your existing package.json; cp .github/workflows/ci.example.yml to enable CI
+cp package.json ./   # or merge its scripts section into your existing package.json; cp .github/ci.example.yml .github/workflows/ci.yml to enable CI
 # Read engineering/quality-scripts/MECHANISMS.md, swap harness.mjs's STEPS for your lint/test
 
 # 4. Open the two living ledgers

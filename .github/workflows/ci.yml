@@ -1,7 +1,7 @@
 # ─────────────────────────────────────────────────────────────────────────────
 # 本仓库自己的 CI —— founder-saas-kit 用自己的门禁治理自己（dogfooding）。
 #
-# 这不是模板（模板是同目录的 ci.example.yml，给你抄进自己项目用）。
+# 这不是模板（模板是 .github/ci.example.yml，特意放在 workflows/ 外，免得 GitHub 把模板也当真 workflow 跑）。
 # 这个文件真实生效：每次 PR / push 到 main|dev，云端就跑 kit 自带的护城河门禁。
 # README / AGENTS 里说「CI 跑的就是它自带的门禁脚本」，靠的就是本文件坐实。
 #

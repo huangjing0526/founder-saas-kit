@@ -138,7 +138,7 @@ petitive overy        baseline itecture  engineering/ + ops/      spective
 | **engineering/** `governance-skills/` | 11 条治理 skill(S1-S11)+ 八段式模板 + 业务 skill 范例 + 可跑 eval | 脱敏后通用 |
 | **engineering/** `enforcement/` | `guard-dangerous-bash` / `guard-high-risk-edit` 两个守卫(+ `guard.test.cjs` 自测)+ 3 个只读 reviewer subagent + 挂载说明 | 通用 |
 | **engineering/** `quality-scripts/` | `check-secrets`(密钥扫描)/ `check-docs-links` / `check-project-structure` / `check-i18n-parity` 等 + `harness` + `health-audit` + **MECHANISMS.md(5 个机制)** | 跨栈/同栈 |
-| `.github/workflows/ci.example.yml` · `package.json` | 可抄的 CI 红线门禁模板 + npm script↔脚本映射(把"挂 CI"落地) | 通用 |
+| `.github/ci.example.yml` · `package.json` | 可抄的 CI 红线门禁模板(放在 workflows/ 外,免得 GitHub 把模板也当真 workflow 跑)+ npm script↔脚本映射 | 通用 |
 | **engineering/** `methodology/` | `anti-drift`(防漂移五原则,最高价值)/ `north-star-rules` / `common-pitfalls` / 事故台账骨架 | 通用 |
 | **engineering/** `registries/` | `business-rules-registry` + `production-readiness-registry` 两本活账本模板 | 通用 |
 | `ops/` **运营协作层** | 5 子组:`collaboration/`(AI分工·无人值守Handoff·Onboarding·会话记忆)· `cadence/`(周检5+5·工时tally·日月季节奏)· `decisions/`(多视角决策·决策日志ADR·术语表)· `run/`(技术运维:事故·备份+演练·监控·依赖安全·成本·发布)· `business/`(业务运营:客服·反馈闭环·计费·合规GDPR·SLA状态页·流失预警)| 通用 |
@@ -178,7 +178,7 @@ cp -r engineering/enforcement/subagents/*.md .claude/agents/
 # 3. 接上质量门禁(按你的技术栈挑)
 cp engineering/quality-scripts/check-*.cjs engineering/quality-scripts/check-*.js scripts/   # 注意 check-project-structure 是 .js
 cp engineering/quality-scripts/harness.mjs engineering/quality-scripts/health-audit.cjs scripts/
-cp package.json ./   # 或把其 scripts 段并进你已有的 package.json;cp .github/workflows/ci.example.yml 启用 CI
+cp package.json ./   # 或把其 scripts 段并进你已有的 package.json;cp .github/ci.example.yml .github/workflows/ci.yml 启用 CI
 # 读 engineering/quality-scripts/MECHANISMS.md,把 harness.mjs 的 STEPS 换成你的 lint/test
 
 # 4. 开两本活账本

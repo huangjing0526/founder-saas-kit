@@ -165,7 +165,7 @@ function runInstall() {
   console.log('\n' + c('bold', '⑤ 还需你手动接（避免覆盖你的项目文件）:'));
   console.log(c('dim', `   - 质量脚本: cp engineering/quality-scripts/check-*.cjs check-*.js *.mjs 到你的 scripts/`));
   console.log(c('dim', `   - npm scripts: 把 kit package.json 的 "scripts" 段并进你的 package.json`));
-  console.log(c('dim', `   - CI: cp .github/workflows/ci.example.yml → .github/workflows/ci.yml（按栈删减 step）`));
+  console.log(c('dim', `   - CI: cp .github/ci.example.yml → .github/workflows/ci.yml（按栈删减 step）`));
   console.log(c('dim', `   - 两本活账本: cp engineering/registries/*.template.md → 你的 docs/`));
   console.log(c('dim', `   - 项目宪法: 把 .claude/CLAUDE.md 模板填好（<PROJECT_NAME> 等占位符）`));
 

@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Fixed
+- Moved the CI **template** out of `.github/workflows/` to `.github/ci.example.yml`. GitHub runs every `.yml` under `workflows/` regardless of a `.example` name, so the template was executing on this repo and failing (its `cache: 'npm'` needs a lockfile this repo doesn't ship). Only the real `ci.yml` runs now.
+
 ## [0.1.0] - 2026-06-06
 
 First public release.

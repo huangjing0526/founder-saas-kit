@@ -1,8 +1,10 @@
 # ─────────────────────────────────────────────────────────────────────────────
 # CI 红线门禁模板（可抄）—— 把 kit 反复说的「wire into CI / CI 硬门禁」落地。
 #
-# 这是模板：文件名带 .example，启用前先重命名去掉它 →
-#     .github/workflows/ci.example.yml  →  .github/workflows/ci.yml
+# 这是模板，**特意放在 .github/ 而非 .github/workflows/**——GitHub 会自动跑 workflows/ 下的
+# 每一个 .yml（`.example` 后缀拦不住它），放进去模板就会在你仓库里真跑并报错。所以模板住在
+# workflows/ 外，启用时再拷进去并去掉 .example：
+#     cp .github/ci.example.yml  .github/workflows/ci.yml
 #
 # 作用：PR / push 时自动跑「红线级」检查 + 测试，任一步失败 = 拦住合并。
 # 它是 harness.mjs（本地 push 前自检）在云端的对应物——本地兜不住的，CI 兜底。

@@ -38,6 +38,7 @@
     "lint:schema": "node engineering/quality-scripts/check-schema-text.cjs",
     "lint:migration": "node engineering/quality-scripts/check-migration-drift.cjs",
     "lint:i18n-parity": "node engineering/quality-scripts/check-i18n-parity.cjs",
+    "lint:self-claims": "node engineering/quality-scripts/check-self-claims.cjs .",
     "demo": "node engineering/demo.mjs",
     "install:claude": "node engineering/install.mjs --tool claude",
     "install:codex": "node engineering/install.mjs --tool codex",

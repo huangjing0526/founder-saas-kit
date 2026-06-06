@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ## [Unreleased]
 
 ### Added
+- **Evolvability: self-claim verification.** New `check-self-claims.cjs` (wired into `harness` as step 7/7) asserts the hard numbers printed in the READMEs/badges — guard-test count, harness step count, runtime-dependency count — equal reality, so they can never silently drift. Applies the kit's own anti-drift principle to itself.
 - English `README.md` as the primary entry, with the Chinese version moved to `README.zh-CN.md` and a language switcher linking the two.
 - First-screen verification metrics + status badges (license / node / runtime deps / guard tests / PRs welcome).
 - Community health files: `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, `ROADMAP.md`, this `CHANGELOG.md`, and `MAP.md` (single-page repository index).

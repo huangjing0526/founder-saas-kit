@@ -47,7 +47,8 @@ if (has('--help') || has('-h') || !val('--target')) {
   --update   拉 kit 新版：没动过的文件升级、你改过的写成 .new 不覆盖（首次请用普通安装）
   --dry-run  只打印将要做什么，不写任何文件
   --force    覆盖目标已存在的 settings/AGENTS（仅普通安装；默认跳过不覆盖）`);
-  process.exit(val('--target') ? 0 : 1);
+  // 显式 --help/-h = 正常帮助请求 → exit 0；仅因缺 --target 触发 = 用法错误 → exit 1。
+  process.exit(has('--help') || has('-h') ? 0 : 1);
 }
 
 const TARGET = resolve(val('--target'));

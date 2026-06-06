@@ -43,6 +43,8 @@ npm run demo            # the "30-second" demo must still run
 
 If you touched a quality script's behavior, also confirm `npm run lint:docs-links` reports **0 redirectable broken links**.
 
+**Changing a downstream-facing surface?** (a public npm-script name, the guard stdin/exit protocol, the quality-script CLI, skill frontmatter keys, the installer flags/manifest) — that's a **contract** (see [`STABILITY.md`](STABILITY.md)). `npm run test:contract` guards these. Breaking one is a major-version change: update `STABILITY.md` and call it out in the PR.
+
 *(中文)* 提 PR 前先在本地跑 `test:guards`（42/42）、`harness`（6/6）、`demo`。改了脚本行为再确认断链 0。
 
 ---

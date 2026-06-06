@@ -18,6 +18,7 @@ For the *why* and the mental model, start at the [README](README.md). This page 
 | [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) | Community behavior standards (Contributor Covenant 2.1) |
 | [SECURITY.md](SECURITY.md) | How to report a vulnerability (guard bypass / scanner miss) |
 | [ROADMAP.md](ROADMAP.md) | Near / mid-term direction + what we explicitly won't do |
+| [STABILITY.md](STABILITY.md) | The interface contract: what's stable for downstream vs. internal (SemVer meaning) |
 | [CHANGELOG.md](CHANGELOG.md) | Notable changes, Keep-a-Changelog format |
 | [LICENSE](LICENSE) | MIT |
 | [package.json](package.json) | npm-script ↔ quality-script wiring (zero runtime deps) |
@@ -46,7 +47,7 @@ For the *why* and the mental model, start at the [README](README.md). This page 
 | **quality-scripts/** | [MECHANISMS](engineering/quality-scripts/MECHANISMS.md) · [harness](engineering/quality-scripts/harness.mjs) · [health-audit](engineering/quality-scripts/health-audit.cjs) · checks: [secrets](engineering/quality-scripts/check-secrets.cjs) · [docs-links](engineering/quality-scripts/check-docs-links.cjs) · [project-structure](engineering/quality-scripts/check-project-structure.js) · [i18n-parity](engineering/quality-scripts/check-i18n-parity.cjs) · [schema-text](engineering/quality-scripts/check-schema-text.cjs) · [migration-drift](engineering/quality-scripts/check-migration-drift.cjs) · [self-claims](engineering/quality-scripts/check-self-claims.cjs) · [map-index](engineering/quality-scripts/check-map-index.cjs) |
 | **methodology/** | [anti-drift](engineering/methodology/anti-drift.md) · [north-star-rules](engineering/methodology/north-star-rules.md) · [common-pitfalls](engineering/methodology/common-pitfalls.md) · [pitfall-index template](engineering/methodology/pitfall-index.template.md) |
 | **registries/** | [business-rules](engineering/registries/business-rules-registry.template.md) · [production-readiness](engineering/registries/production-readiness-registry.template.md) |
-| install / demo | [install.mjs](engineering/install.mjs) · [demo.mjs](engineering/demo.mjs) |
+| install / demo / contract | [install.mjs](engineering/install.mjs) · [demo.mjs](engineering/demo.mjs) · [contract.test.cjs](engineering/contract.test.cjs) |
 
 ## ops/ — operations & collaboration
 

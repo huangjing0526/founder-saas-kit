@@ -47,6 +47,7 @@
     "harness": "node engineering/quality-scripts/harness.mjs",
     "audit:health": "node engineering/quality-scripts/health-audit.cjs",
     "test:guards": "node engineering/enforcement/hooks/guard.test.cjs",
+    "test:contract": "node engineering/contract.test.cjs",
     "test": "npm run test:guards && echo \"（占位）再配置你的应用测试，例如 vitest run / jest / node --test\" && exit 0",
     "test:integration": "echo \"（占位）配置你的集成测试，例如 vitest run tests/integration（需 test DB）；当前为占位，原样退出 0\" && exit 0"
   }

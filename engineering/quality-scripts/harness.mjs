@@ -40,6 +40,7 @@ const STEPS = [
   { label: '项目结构检查', script: 'check:structure' },   // 示例：本目录 check-project-structure.js
   { label: '自我宣称校验', script: 'lint:self-claims' },  // 本仓专属：README/badge 写死的数字必须 == 实际（防漂移；抄进你项目会优雅跳过）
   { label: 'MAP 索引防腐', script: 'lint:map-index' },    // 本仓专属：每个 .md 都在 MAP 里、MAP 每条链接都活（抄进你项目把 MAP.md 换成你的索引）
+  { label: '接口契约自测', script: 'test:contract' },     // 本仓专属：STABILITY.md §1 对下游稳定的契约没被改坏（抄进你项目可删）
   { label: '单元 + 接口测试', script: 'test' },            // 示例：你的测试命令
   // …按需增删。建议把上面替换成你自己的 npm script 后删掉这条注释。
 ]

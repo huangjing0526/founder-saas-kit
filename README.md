@@ -1,183 +1,220 @@
 # Founder SaaS Kit
 
-> 写第一行代码前,把**工程约束、AI 协作方式、上线检查**一次配好。
-> 让 AI(Claude Code / Codex / Cursor)在你的项目里"不乱写代码"。
+**English** · [简体中文](./README.zh-CN.md)
 
-这不是又一个技术栈模板。满网都有"Next.js + Supabase 启动器"。
-这套 kit 解决的是上一层问题:**怎么让 AI 写出的系统不在上线时翻车。**
+[![license](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![node](https://img.shields.io/badge/node-%E2%89%A518-blue)](package.json)
+[![runtime deps](https://img.shields.io/badge/runtime%20deps-0-brightgreen)](package.json)
+[![guard tests](https://img.shields.io/badge/guard%20tests-42%2F42-success)](engineering/enforcement/hooks/guard.test.cjs)
+[![PRs welcome](https://img.shields.io/badge/PRs-welcome-blueviolet)](CONTRIBUTING.md)
 
-它从一个真实的多租户 SaaS CRM(一个 PM + AI 协作 4 个月)里提纯而来。
-每一条规则、每一个守卫、每一份 checklist,都是从一次真实事故 / 一条真实红线 / 一次真实返工里长出来的——不是空话。
+> Before you write the first line of code, configure your **engineering guardrails, AI-collaboration rules, and pre-launch checks** — once.
+> Keep AI (Claude Code / Codex / Cursor) from going off-script in your project.
+
+> 🛡️ **Guard self-tests 42/42** · **harness 6/6 green** · **0 broken internal doc links** · distilled from **4 months** of a real multi-tenant SaaS CRM · **zero runtime dependencies**
+
+This is not yet another stack template. The web is full of "Next.js + Supabase starters."
+This kit solves the layer above that: **how to keep what the AI builds from breaking when you ship.**
+
+It was distilled from a real multi-tenant SaaS CRM (one PM + AI, 4 months of shipping). Every rule, every guard, every checklist grew out of a real incident, a real red line, or a real rework — not theory.
+
+<details>
+<summary><b>Table of contents</b></summary>
+
+- [What this kit solves](#what-this-kit-solves)
+- [See it work in 30 seconds](#see-it-work-in-30-seconds)
+- [The three-layer mental model](#the-three-layer-mental-model-inside-out)
+- [Full product lifecycle](#full-product-lifecycle-from-fuzzy-idea-to-retro-loop)
+- [Directory map](#directory-map)
+- [Starting a new project](#starting-a-new-project)
+- [Core philosophy](#core-philosophy-one-page)
+- [Who this is not for](#who-this-is-not-for)
+- [Contributing & feedback](#contributing--feedback)
+- [Origin & credits](#origin--credits)
+
+</details>
+
+> Prerequisite: Node ≥18 (`node -v` to check). Beyond that, **zero dependencies** — every quality script is plain Node.
 
 ---
 
-## 这套 kit 解决什么
+## What this kit solves
 
-一个人(尤其技术背景不强的 founder / PM)带着 AI 持续交付,最容易翻的车不是"代码写错",而是:
+When one person — especially a non-technical founder / PM — ships continuously with an AI, the things that actually break aren't "the code is wrong." They are:
 
-1. AI **好心办坏事**——自作主张加了你没要的业务规则、校验、自动行为
-2. AI **说"做完了"但没验证**——拿 lint 通过 / typecheck 过当完成证据
-3. AI **改了无关文件** / 跨租户数据泄漏 / 危险 git 操作把工作清光
-4. **文档与代码漂移**——"以为做好了的"其实退化了,审计凭印象不凭证据
-5. 关键决策**没想透就开干**,事故反复修第 3 次还在出
+1. The AI **means well but does harm** — it adds business rules, validations, or auto-behaviors you never asked for.
+2. The AI **says "done" without verifying** — it treats a passing lint / typecheck as proof of completion.
+3. The AI **touches unrelated files** / leaks cross-tenant data / runs a dangerous git command that wipes your work.
+4. **Docs drift from code** — what you "thought was done" silently regressed; audits run on impression, not evidence.
+5. **Key decisions go un-thought-through**, and the same incident keeps recurring on the 3rd fix.
 
-这套 kit 用**流程纪律 + 可执行守卫**把这些挡在门外,而不是靠人盯人。
+This kit keeps these out with **process discipline + executable guards**, instead of relying on someone watching over the AI's shoulder.
 
 ---
 
-## 30 秒看它干活
+## See it work in 30 seconds
 
-clone 下来,一条命令当场看护城河拦截(不是空谈"有守卫"):
+Clone it and run one command to watch the guardrails block an attack live (not just claim "we have guards"):
 
 ```bash
+git clone https://github.com/huangjing0526/founder-saas-kit.git
+cd founder-saas-kit
 npm run demo
 ```
 
-演示:AI 想跑 `rm -rf /` → 🛑 守卫拦下 · 普通命令 → ✅ 放行 · 想改 `.env`/私钥/CI 文件 → 🛑 拦下 · 一个密钥溜进代码 → 🔦 扫描器抓出并打码 · 守卫回归自测 **42/42**。全程安全——危险命令只**喂给守卫看它拦不拦,从不真的执行**。
+The demo: AI tries to run `rm -rf /` → 🛑 guard blocks it · a normal command → ✅ allowed · AI tries to edit `.env` / a private key / a CI file → 🛑 blocked · a secret slips into the code → 🔦 the scanner catches and masks it · guard regression self-test **42/42**. All safe — dangerous commands are only **fed to the guard to see whether it blocks them, never actually executed.**
 
-> **本 kit 用自己治理自己**(dogfooding):提交守自己的 Git 纪律、根目录 [`AGENTS.md`](AGENTS.md) 即它对外的跨工具约定、CI 跑的就是它自带的门禁脚本(`npm run harness` 6 步全绿、314 条内链 0 断)。工具信自己,才值得你信。
+> **This kit governs itself** (dogfooding): commits obey its own Git discipline; the root [`AGENTS.md`](AGENTS.md) is its cross-tool contract; CI ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) runs the very gate scripts it ships (`npm run harness` 6/6 green, 0 redirectable broken internal links). A tool that trusts itself is one you can trust.
 
 ---
 
-## 三层心智模型(从内到外)
+## The three-layer mental model (inside-out)
 
-顶层只有 **4 个语义桶**,各对应一种心智:
+The top level has just **4 semantic buckets**, each mapping to one mental model:
 
 ```
 founder-saas-kit/
-├── lifecycle/      ← 按产品阶段顺序走查(⓪竞品→①需求→…→⑨复盘,共 10 格)
-│   ├── 0-competitive-analysis/  竞品分析(看清战场)
-│   ├── 1-discovery/      需求发现与讨论
-│   ├── 2-prd/            PRD 双 skill 四件套
-│   ├── 3-ui-baseline/    UI 设计基线
-│   ├── 4-architecture/   技术方案与架构评估
-│   ├── 5-coding ~ 8-operations/  ⑤编码⑥测试⑦上线⑧运营(信号牌 → engineering/+ops/)
-│   └── 9-retrospective/  复盘与经验沉淀(喂回前面所有阶段)
+├── lifecycle/      ← walk it in product order (⓪competitive → ①discovery → … → ⑨retro, 10 stages)
+│   ├── 0-competitive-analysis/  competitive analysis (read the battlefield)
+│   ├── 1-discovery/      requirement discovery & discussion
+│   ├── 2-prd/            PRD double-skill toolkit
+│   ├── 3-ui-baseline/    UI design baseline
+│   ├── 4-architecture/   technical design & architecture review
+│   ├── 5-coding ~ 8-operations/  ⑤coding ⑥testing ⑦launch ⑧operations (signposts → engineering/+ops/)
+│   └── 9-retrospective/  retro & lessons captured (fed back into every earlier stage)
 │
-├── engineering/    ← 跨阶段 always-on 的工程护城河(项目无关,直接搬)
-│   ├── governance-skills/  11 条治理 skill(八段式 + 三端转换)
-│   ├── enforcement/        2 个 PreToolUse 守卫 + 3 个只读审查 agent
-│   ├── quality-scripts/    零依赖 lint + 两个聚合框架 + 5 个机制
-│   ├── methodology/        防漂移五原则 · 北极星框架 · 坑沉淀模板
-│   └── registries/         业务规则总账 + 生产就绪基线(两本活账本)
+├── engineering/    ← cross-stage, always-on engineering moat (project-agnostic, lift as-is)
+│   ├── governance-skills/  11 governance skills (8-section format + 3-tool conversion)
+│   ├── enforcement/        2 PreToolUse guards + 3 read-only reviewer agents
+│   ├── quality-scripts/    zero-dep lint + 2 aggregation frameworks + 5 mechanisms
+│   ├── methodology/        anti-drift 5 principles · north-star framework · pitfall template
+│   └── registries/         business-rules ledger + production-readiness baseline (2 living ledgers)
 │
-├── ops/            ← 运营与协作层,5 子组:collaboration/(分工·Handoff·上手·会话记忆)
-│                       cadence/(周检·工时·日月季节奏)· decisions/(多视角决策·决策日志·术语表)
-│                       run/(技术运维:事故·备份·监控·依赖安全·成本·发布)· business/(业务运营:客服·反馈闭环·计费·合规GDPR·SLA状态页)
-├── examples/       ← 所有完整真实范本集中(对照参考,起新项目时不动)
-└── .claude/CLAUDE.md   项目宪法:Git/生产/业务规则三套铁律
+├── ops/            ← operations & collaboration, 5 sub-groups: collaboration/ (roles · handoff · onboarding · session memory)
+│                       cadence/ (weekly check · hours · daily/monthly/quarterly rhythm) · decisions/ (multi-view decisions · decision log · glossary)
+│                       run/ (tech ops: incidents · backup · monitoring · dependency security · cost · release) · business/ (CS · feedback loop · billing · GDPR compliance · SLA status page)
+├── examples/       ← all complete real-world samples, in one place (reference only; don't touch when starting new)
+└── .claude/CLAUDE.md   the project constitution: Git / production / business-rule ironclad rules
 ```
 
-**两个轴怎么读**:`lifecycle/` 是**时间轴**(你做产品走到哪一步,就翻那一格);`engineering/` 是**always-on 护城河**(每一步都在背后守着)。生命周期阶段⑤编码 / ⑥测试 / ⑦上线 / ⑧运营没有单独目录——它们由 `engineering/` + `ops/` 全程覆盖(见下方生命周期图)。
+**How to read the two axes**: `lifecycle/` is the **time axis** (whatever product step you're on, open that stage); `engineering/` is the **always-on moat** (guarding behind every step). Lifecycle stages ⑤coding / ⑥testing / ⑦launch / ⑧operations have no standalone directory — they're covered end-to-end by `engineering/` + `ops/` (see the lifecycle diagram below).
 
-**为什么不钦定技术栈?** 因为护城河在 `engineering/`。"用什么栈"是你的选择,kit 不替你定;它只保证**不管你用什么栈,AI 都守规矩、上线前都查到位**。
+**Why no prescribed stack?** Because the moat lives in `engineering/`. "Which stack" is your call — the kit doesn't decide it for you; it only guarantees that **whatever stack you use, the AI plays by the rules and everything is checked before launch.**
 
 ---
 
-## 产品全生命周期(从模糊想法到复盘闭环)
+## Full product lifecycle (from fuzzy idea to retro loop)
 
-kit 按完整生命周期组织——每个阶段都有对应模块兜底,不是只管"写代码"那一段:
+The kit is organized around the complete lifecycle — every stage has a module behind it, not just the "write code" part:
 
-`lifecycle/` 是完整的 **⓪→⑨** 十格,一格不缺(索引见 [`lifecycle/README.md`](lifecycle/README.md)):
+`lifecycle/` is the full **⓪→⑨** in 10 stages, none missing (index: [`lifecycle/README.md`](lifecycle/README.md)):
 
 ```
-⓪竞品  ①需求  ②PRD  ③UI基线  ④架构   ⑤编码 ⑥测试 ⑦上线 ⑧运营    ⑨复盘
-  │      │      │      │       │         └──────┬──────┘          │
-0-comp 1-disc 2-prd 3-ui-   4-arch     ⑤~⑧ 信号牌目录 →       9-retro
-petitive overy        baseline itecture  engineering/ + ops/      spective
-  └──── 独立内容目录 ────────────┘       (守卫·机检·验收·部署红线)  (喂回 ⓪~⑧)
+⓪compete ①discover ②PRD ③UI-base ④arch    ⑤code ⑥test ⑦launch ⑧ops    ⑨retro
+   │        │         │      │       │         └──────┬──────┘          │
+0-comp  1-disc    2-prd  3-ui-   4-arch     ⑤~⑧ signpost dirs →     9-retro
+petitive overy           baseline itecture  engineering/ + ops/      spective
+   └──── standalone content dirs ──────────┘  (guards·checks·sign-off·deploy red lines)  (fed back into ⓪~⑧)
 ```
 
-- **独立内容目录**(⓪①②③④⑨):方法 / 模板 / skill 都在目录里。
-- **信号牌目录**(⑤⑥⑦⑧):由 always-on 的 `engineering/` + `ops/` 全程覆盖,目录里只放一份 README 指路(编码守卫 + 机检 + 验收 S8 + 部署红线 S6 + 运营 S10 + 周检 + health-audit),不重复内容。
-- **闭环**:⑨ 复盘的产出**喂回 ⓪~⑧**——返工/事故沉淀成规则(`engineering/registries/`)、事故台账(`engineering/methodology/`)、机检脚本(`engineering/quality-scripts/`)或新 skill。
+- **Standalone content dirs** (⓪①②③④⑨): methods / templates / skills live inside the directory.
+- **Signpost dirs** (⑤⑥⑦⑧): covered end-to-end by always-on `engineering/` + `ops/`; the directory holds just a README pointing the way (coding guards + machine checks + sign-off S8 + deploy red lines S6 + operations S10 + weekly check + health-audit), no duplicated content.
+- **The loop**: stage ⑨ retro's output is **fed back into ⓪~⑧** — reworks/incidents settle into rules (`engineering/registries/`), an incident ledger (`engineering/methodology/`), machine-check scripts (`engineering/quality-scripts/`), or new skills.
 
 ---
 
-## 目录速览
+## Directory map
 
-| 桶 / 目录 | 装了什么 | 通用度 |
+| Bucket / directory | What's in it | Generality |
 |------|---------|--------|
-| **lifecycle/** `0-competitive-analysis/` | 竞品分析方法(直接/间接/替代三类)· 对比矩阵+定位图模板 · 三条结论(差异化/MVP标配/不做)+ 可触发 skill | 通用 |
-| **lifecycle/** `1-discovery/` | 需求三层拆解 · 澄清提问清单 · 反馈→需求 · 范围裁剪 + 可触发 skill | 通用 |
-| **lifecycle/** `2-prd/` | `PRD-SPEC` + Full/Lite 模板 + prd-author / prd-review 双 skill | 通用 |
-| **lifecycle/** `3-ui-baseline/` | 设计 token 体系 · loading/empty/error 三态 · 组件复用红线 · 交互约定 · 多端分治 + skill | 栈中立 |
-| **lifecycle/** `4-architecture/` | PRD→技术方案评估清单 · 后端分层基线(Routes→Services→Repositories)+ skill | 通用 |
-| **lifecycle/** `5~8`(信号牌) | ⑤编码⑥测试⑦上线⑧运营,各一份 README 指向 engineering/ + ops/ 的对应工具 | 通用 |
-| **lifecycle/** `9-retrospective/` | 经验沉淀四问 · 复盘模板 · 四个沉淀落点(喂回前面阶段)+ skill | 通用 |
-| **engineering/** `governance-skills/` | 11 条治理 skill(S1-S11)+ 八段式模板 + 业务 skill 范例 + 可跑 eval | 脱敏后通用 |
-| **engineering/** `enforcement/` | `guard-dangerous-bash` / `guard-high-risk-edit` 两个守卫(+ `guard.test.cjs` 自测)+ 3 个只读 reviewer subagent + 挂载说明 | 通用 |
-| **engineering/** `quality-scripts/` | `check-secrets`(密钥扫描)/ `check-docs-links` / `check-project-structure` / `check-i18n-parity` 等 + `harness` + `health-audit` + **MECHANISMS.md(5 个机制)** | 跨栈/同栈 |
-| `.github/workflows/ci.example.yml` · `package.json` | 可抄的 CI 红线门禁模板 + npm script↔脚本映射(把"挂 CI"落地) | 通用 |
-| **engineering/** `methodology/` | `anti-drift`(防漂移五原则,最高价值)/ `north-star-rules` / `common-pitfalls` / 事故台账骨架 | 通用 |
-| **engineering/** `registries/` | `business-rules-registry` + `production-readiness-registry` 两本活账本模板 | 通用 |
-| `ops/` **运营协作层** | 5 子组:`collaboration/`(AI分工·无人值守Handoff·Onboarding·会话记忆)· `cadence/`(周检5+5·工时tally·日月季节奏)· `decisions/`(多视角决策·决策日志ADR·术语表)· `run/`(技术运维:事故·备份+演练·监控·依赖安全·成本·发布)· `business/`(业务运营:客服·反馈闭环·计费·合规GDPR·SLA状态页·流失预警)| 通用 |
-| `examples/` | 完整真实范本(business-rules + ui-baseline,对照看"填成什么样算对") | 参考 |
-| `.claude/CLAUDE.md` | 项目宪法:G1-G6 Git 铁律 + P1-P3 生产铁律 + 业务规则三铁律 + 输出前自检 | 脱敏占位 |
+| **lifecycle/** `0-competitive-analysis/` | Competitive-analysis methods (direct/indirect/substitute) · comparison matrix + positioning map templates · 3 conclusions (differentiation/MVP-baseline/won't-do) + triggerable skill | Generic |
+| **lifecycle/** `1-discovery/` | 3-layer requirement breakdown · clarifying-question checklist · feedback→requirement · scope trimming + triggerable skill | Generic |
+| **lifecycle/** `2-prd/` | `PRD-SPEC` + Full/Lite templates + prd-author / prd-review double skill | Generic |
+| **lifecycle/** `3-ui-baseline/` | Design-token system · loading/empty/error 3-state · component-reuse red line · interaction conventions · multi-platform split + skill | Stack-neutral |
+| **lifecycle/** `4-architecture/` | PRD→technical-design review checklist · backend layering baseline (Routes→Services→Repositories) + skill | Generic |
+| **lifecycle/** `5~8` (signposts) | ⑤coding ⑥testing ⑦launch ⑧operations — each a README pointing to the matching tools in engineering/ + ops/ | Generic |
+| **lifecycle/** `9-retrospective/` | Lessons-captured 4 questions · retro template · 4 settling points (fed back into earlier stages) + skill | Generic |
+| **engineering/** `governance-skills/` | 11 governance skills (S1-S11) + 8-section template + business-skill sample + runnable eval | Generic after redaction |
+| **engineering/** `enforcement/` | `guard-dangerous-bash` / `guard-high-risk-edit` two guards (+ `guard.test.cjs` self-test) + 3 read-only reviewer subagents + mounting guide | Generic |
+| **engineering/** `quality-scripts/` | `check-secrets` (secret scan) / `check-docs-links` / `check-project-structure` / `check-i18n-parity` etc. + `harness` + `health-audit` + **MECHANISMS.md (5 mechanisms)** | Cross-/same-stack |
+| `.github/workflows/ci.example.yml` · `package.json` | Copy-paste CI red-line gate template + npm-script↔script wiring (makes "wire it into CI" real) | Generic |
+| **engineering/** `methodology/` | `anti-drift` (5 anti-drift principles, highest value) / `north-star-rules` / `common-pitfalls` / incident-ledger skeleton | Generic |
+| **engineering/** `registries/` | `business-rules-registry` + `production-readiness-registry`, two living-ledger templates | Generic |
+| `ops/` **operations & collaboration** | 5 sub-groups: `collaboration/` (AI roles · unattended handoff · onboarding · session memory) · `cadence/` (weekly check 5+5 · hours tally · daily/monthly/quarterly rhythm) · `decisions/` (multi-view decisions · decision log ADR · glossary) · `run/` (tech ops: incidents · backup + drills · monitoring · dependency security · cost · release) · `business/` (business ops: CS · feedback loop · billing · GDPR compliance · SLA status page · churn warning) | Generic |
+| `examples/` | Complete real samples (business-rules + ui-baseline, to see "what a correct fill looks like") | Reference |
+| `.claude/CLAUDE.md` | The project constitution: G1-G6 Git rules + P1-P3 production rules + business-rule rules + pre-output self-check | Redacted placeholder |
 
 ---
 
-## 怎么起一个新项目
+## Starting a new project
 
-**一键接入(推荐)**——把守卫 / reviewer / skills / AGENTS.md 装进你已有的项目:
+**One-command install (recommended)** — drop the guards / reviewers / skills / AGENTS.md into your existing project:
 
 ```bash
-# 在 kit 目录里跑,装进你的目标项目(支持 claude / codex / cursor)
+# Run inside the kit; installs into your target project (supports claude / codex / cursor)
 node engineering/install.mjs --target ../my-app --tool claude
-node engineering/install.mjs --target ../my-app --dry-run   # 先看它会装什么
+node engineering/install.mjs --target ../my-app --dry-run   # preview what it would install first
 ```
 
-**或手动起一个新项目**:
+**Or bootstrap a new project manually:**
 
 ```bash
-git clone <this-repo> my-new-project
+git clone https://github.com/huangjing0526/founder-saas-kit.git my-new-project
 cd my-new-project
-rm -rf .git && git init        # 断开模板仓,开始你自己的历史
+rm -rf .git && git init        # cut the template repo, start your own history
 
-# 1. 填项目宪法(10 分钟)——把占位符换成你的项目事实
-$EDITOR .claude/CLAUDE.md       # 项目是什么 / 给谁用 / 红线 / 分支模型
+# 1. Fill the project constitution (10 min) — replace placeholders with your project's facts
+$EDITOR .claude/CLAUDE.md       # what the project is / who it's for / red lines / branch model
 
-# 2. 挂上强制层(5 分钟)
+# 2. Mount the enforcement layer (5 min)
 cp engineering/enforcement/settings.example.json .claude/settings.json
-cp engineering/enforcement/hooks/*.cjs .claude/hooks/        # 路径按 settings 里引用调整
+cp engineering/enforcement/hooks/*.cjs .claude/hooks/        # adjust paths to match settings refs
 cp -r engineering/enforcement/subagents/*.md .claude/agents/
 
-# 3. 接上质量门禁(按你的技术栈挑)
-cp engineering/quality-scripts/check-*.cjs engineering/quality-scripts/check-*.js scripts/   # 注意 check-project-structure 是 .js
+# 3. Wire up the quality gates (pick by your stack)
+cp engineering/quality-scripts/check-*.cjs engineering/quality-scripts/check-*.js scripts/   # note: check-project-structure is .js
 cp engineering/quality-scripts/harness.mjs engineering/quality-scripts/health-audit.cjs scripts/
-cp package.json ./   # 或把其 scripts 段并进你已有的 package.json;cp .github/workflows/ci.example.yml 启用 CI
-# 读 engineering/quality-scripts/MECHANISMS.md,把 harness.mjs 的 STEPS 换成你的 lint/test
+cp package.json ./   # or merge its scripts section into your existing package.json; cp .github/workflows/ci.example.yml to enable CI
+# Read engineering/quality-scripts/MECHANISMS.md, swap harness.mjs's STEPS for your lint/test
 
-# 4. 开两本活账本
-cp engineering/registries/*.template.md docs/      # 业务规则总账 + 生产就绪基线
+# 4. Open the two living ledgers
+cp engineering/registries/*.template.md docs/      # business-rules ledger + production-readiness baseline
 
-# 5. 开始开发
-# Claude Code 会自动读 .claude/CLAUDE.md + skills,按治理 skill 协作
+# 5. Start building
+# Claude Code auto-reads .claude/CLAUDE.md + skills and collaborates by the governance skills
 ```
 
 ---
 
-## 核心理念(一页纸心法)
+## Core philosophy (one page)
 
-- **规则即护栏**:不是让 AI 少做,而是让它在明确边界内**放手做**。
-- **小事不拖,大事先对齐**:任务分级,新需求先判规模再动手(S1)。
-- **AI 最大的风险是"好心办坏事"**:自作主张加业务规则——所以业务逻辑必须授权 + 登记(S2 + 业务规则总账)。
-- **危险操作必须带回滚点、不越界、报错即停**(P1-P3 + 两个守卫)。
-- **说"搞定了"之前先跑验证;审计先读文件再报告**——凭证据不凭印象(S8 / S9 + 防漂移)。
-- **同一问题修第 3 次还在出 → 停下改机制,不要再修一遍代码**。
-
----
-
-## 不适合谁
-
-如果你要的是"一键生成能跑的 SaaS",这不是你要的东西。
-这套 kit 假设你会用 Claude Code / Cursor,且愿意在写码前花 20 分钟配置约束。
-回报是:**AI 在你项目里的产出质量,和上线后的事故率,差一个数量级。**
+- **Rules are guardrails**: not to make the AI do less, but to let it **go full speed within clear boundaries**.
+- **Don't stall on small things, align first on big ones**: tier the task, judge scope before acting on a new requirement (S1).
+- **The AI's biggest risk is "meaning well, doing harm"**: adding business rules on its own — so business logic must be authorized + registered (S2 + business-rules ledger).
+- **Dangerous operations must carry a rollback point, stay in-scope, and stop on error** (P1-P3 + two guards).
+- **Run verification before saying "done"; read files before reporting in an audit** — evidence over impression (S8 / S9 + anti-drift).
+- **Same problem fixed for the 3rd time and still recurring → stop and fix the mechanism, don't patch the code again.**
 
 ---
 
-## 出处与致谢
+## Who this is not for
 
-提纯自一个真实多租户 SaaS CRM 的 4 个月 PM+AI 协作经验。
-方法论层借鉴了 [obra/superpowers](https://github.com/obra/superpowers)(systematic-debugging / verification-before-completion / writing-plans 等通用范式),
-本 kit 的增量价值在**通用框架不覆盖的空白**:业务规则登记、多租户隔离、审计先验证、生产部署红线、防认知漂移。
+If what you want is "one click to generate a runnable SaaS," this isn't it.
+This kit assumes you'll use Claude Code / Cursor, and you're willing to spend 20 minutes configuring constraints before writing code. The payoff: **the quality of the AI's output in your project, and your post-launch incident rate, differ by an order of magnitude.**
+
+---
+
+## Contributing & feedback
+
+- 🐛 Found a bug / have an idea → [open an issue](https://github.com/huangjing0526/founder-saas-kit/issues)
+- 🔧 Want to contribute → read [`CONTRIBUTING.md`](CONTRIBUTING.md) first (this repo has strict Git discipline + gates; run `npm run harness` before a PR)
+- 🗺️ Want to know what's next → [`ROADMAP.md`](ROADMAP.md)
+- 🔒 Security issue → see [`SECURITY.md`](SECURITY.md) (disclose privately, don't open a public issue)
+- ⭐ Found it useful → drop a Star so more founders find it
+
+---
+
+## Origin & credits
+
+Distilled from 4 months of PM+AI collaboration on a real multi-tenant SaaS CRM.
+The methodology layer draws on [obra/superpowers](https://github.com/obra/superpowers) (systematic-debugging / verification-before-completion / writing-plans and other generic patterns). This kit's added value is in **the gaps a generic framework doesn't cover**: business-rule registration, multi-tenant isolation, audit-before-verify, production deploy red lines, and anti-cognitive-drift.

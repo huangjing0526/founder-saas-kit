@@ -1,0 +1,86 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# CI 红线门禁模板（可抄）—— 把 kit 反复说的「wire into CI / CI 硬门禁」落地。
+#
+# 这是模板：文件名带 .example，启用前先重命名去掉它 →
+#     .github/workflows/ci.example.yml  →  .github/workflows/ci.yml
+#
+# 作用：PR / push 时自动跑「红线级」检查 + 测试，任一步失败 = 拦住合并。
+# 它是 harness.mjs（本地 push 前自检）在云端的对应物——本地兜不住的，CI 兜底。
+#
+# 接入要点：
+#   - 下面每一步都加了「按你的栈增删」注释。用不到的检查（比如没多语言就删 i18n、
+#     没数据库迁移就删 migration-drift）直接删掉对应 step 即可。
+#   - 所有 step 调的是 package.json 里的 npm script（见 kit 根 package.json 的 "scripts"），
+#     脚本本体在 engineering/quality-scripts/ 下。改 script 名要两边一起改。
+# ─────────────────────────────────────────────────────────────────────────────
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main, dev] # 按你的分支模型改
+
+jobs:
+  gates:
+    name: 红线门禁 + 测试
+    runs-on: ubuntu-latest
+    steps:
+      # 1) 拉代码
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2) 装 Node（version 按你项目的 .nvmrc / engines 改）
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm' # 没用 npm（pnpm/yarn）就换对应 cache
+
+      # 3) 装依赖。kit 模板本身零依赖，质量脚本纯 Node 即可跑；
+      #    你的项目接进来后这里换成 `npm ci`（有 lockfile 时）。
+      - name: Install deps
+        run: npm ci || echo "（kit 模板无依赖，跳过；接入真项目时改成必跑 npm ci）"
+
+      # ── 红线门禁（HARD：任一失败即 CI 红，拦住合并）────────────────────────
+      # 这些是「违反 = 不该合并」的硬检查。下面按常见栈给全，用不到的删掉。
+
+      # 3.0 守卫自测（guard.test）——验证两个 PreToolUse 守卫的拦截逻辑没被改坏。
+      #     这一步是护城河的「报警器接电」：下个 AI 若把守卫的洞改回来，这里直接红。
+      - name: 守卫自测（guard.test）
+        run: npm run test:guards
+
+      # 3.1 硬编码密钥扫描（最高频最贵事故防线，建议所有项目都留）
+      - name: 密钥扫描（check-secrets）
+        run: npm run lint:secrets
+
+      # 3.2 文档内部断链（有 docs/ 互链就留）
+      - name: 文档断链（check-docs-links）
+        run: npm run lint:docs-links
+
+      # 3.3 项目根目录整洁（防调试日志/临时文件混进仓库）
+      - name: 项目结构（check-project-structure）
+        run: npm run check:structure
+
+      # 3.4 Prisma schema 长文本字段——【按栈可选】只有 Prisma + MySQL 项目需要，否则删
+      - name: schema 长文本字段（check-schema-text）
+        run: npm run lint:schema
+
+      # 3.5 schema 改了没补 migration——【按栈可选】只有用迁移工具（Prisma 等）的项目需要，否则删
+      - name: migration 漂移（check-migration-drift）
+        run: npm run lint:migration
+
+      # 3.6 i18n 多语言 key 一致性——【按栈可选】只有多语言项目需要，否则删
+      - name: i18n key 一致性（check-i18n-parity）
+        run: npm run lint:i18n-parity
+
+      # ── 测试（红线）────────────────────────────────────────────────────────
+      # 把 package.json 的 "test" 换成你真实的测试命令后启用。
+      - name: 单元 + 接口测试
+        run: npm test
+
+      # ── 慢测兜底（可选）──────────────────────────────────────────────────────
+      # 需要数据库/浏览器的集成 / e2e 测试放这里，靠 service container 起依赖。
+      # - name: 集成测试
+      #   env:
+      #     INTEGRATION_TEST: '1'
+      #   run: npm run test:integration

@@ -1,0 +1,15 @@
+# Normalize line endings — this repo has many UTF-8 (incl. Chinese) docs.
+# Avoids CRLF noise diffs when contributors clone on Windows.
+* text=auto eol=lf
+
+# Scripts are always LF.
+*.sh   text eol=lf
+*.mjs  text eol=lf
+*.cjs  text eol=lf
+*.js   text eol=lf
+
+# Treat these as binary (no EOL normalization, no diff).
+*.png  binary
+*.jpg  binary
+*.gif  binary
+*.ico  binary

@@ -108,7 +108,7 @@ A 臂（挂 skill）和 B 臂（裸跑）**必须用同一个强模型**。唯�
 
 | 编号 | fixture（可跑）| 被测 skill（skillFile）| 治理目标 | 净贡献（参考）|
 |------|---------|---------|---------|------------------|
-| D-1 ~ D-4 | `fixtures/document-amount-freeze.json` | `_examples-business/B-example-document-amount-freeze.md`（kit 自带真实 skill）| 已签金额锁 / 报价无条件级联 / 手动改解绑 / 有限数校验 | **3/4**（D-1/D-2/D-4 ✓；D-3 基座本就会，净贡献 0 诚实保留）|
+| D-1 ~ D-4 | `fixtures/document-amount-freeze.json` | `../_examples-business/B-example-document-amount-freeze.md`（kit 自带真实 skill）| 已签金额锁 / 报价无条件级联 / 手动改解绑 / 有限数校验 | **3/4**（D-1/D-2/D-4 ✓；D-3 基座本就会，净贡献 0 诚实保留）|
 | E-1 ~ E-3 | `fixtures/order-state-machine.json` | **复用** `B-example-document-amount-freeze.md`（kit 不自带状态机守卫 skill，fixture 里已注明此复用）| 终态锁 / 前置态校验 / 取消回滚副作用 | 演示用 fixture，落地请把 `skillFile` 换成你项目的状态机 skill 再跑 |
 | T-1 ~ T-2 | `fixtures/tenant-isolation.json` | `S4-tenant-isolation-guard.md`（kit 自带真实 skill）| 内部接口仍带隔离 / 不先查全量前端过滤 | 半事实型，实测可能偏低甚至 0（演示「0 怎么诚实读」）|
 

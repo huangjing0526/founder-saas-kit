@@ -28,7 +28,7 @@ owner: you
 
 **做什么**
 - **开工（约 5 分钟）**：读项目上下文（always-loaded 上下文文件 → 项目简报 → 当前 sprint），然后**只定 1 件主线事**——今天最该推进的那一件，不贪多。
-- **收工（约 10 分钟）**：用 session 三件套存档（见 [`../collaboration/session-commands/`](../collaboration/)），重点记下**「试了没成功」**——具体报什么错、为什么不行，防止明天或下个会话重复踩同一个坑。
+- **收工（约 10 分钟）**：用 session 三件套存档（见 [`../collaboration/session-commands/`](../collaboration/session-commands/)），重点记下**「试了没成功」**——具体报什么错、为什么不行，防止明天或下个会话重复踩同一个坑。
 
 **花多久**：开工 5 分钟，收工 10 分钟。
 

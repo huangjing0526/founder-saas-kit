@@ -1,6 +1,6 @@
 # UI 基线落地范例（Vue 3 + Element Plus）
 
-> **这是其中一个具体栈的落地示例，不是规范本身。** 规范（框架无关原则）在上一级目录的五份文档里。
+> **这是其中一个具体栈的落地示例，不是规范本身。** 规范（框架无关原则）在 `lifecycle/3-ui-baseline/` 的五份文档里。
 > 这份文件展示：把那套基线落到 **Vue 3 + Element Plus** 的真实代码长什么样——一组真实的 token 变量名、列表页 + 抽屉的真实结构、操作列收起的真实写法、三态的真实模板、一张已有组件清单。
 > **你换栈时（React / 原生 / 别的组件库），不要照抄这里的变量名和组件名——照抄上层的「原则」，用你的栈重新落地。**
 >
@@ -8,7 +8,7 @@
 
 ---
 
-## 1. 设计 Token（对应 `../design-tokens.md`）
+## 1. 设计 Token（对应 `../lifecycle/3-ui-baseline/design-tokens.md`）
 
 落地机制：CSS 自定义属性，集中在一个全局样式文件的 `:root` 块——这是唯一权威来源，代码引用以此为准。
 
@@ -58,7 +58,7 @@
 
 ---
 
-## 2. 已有组件清单（对应 `../component-reuse-redline.md`）
+## 2. 已有组件清单（对应 `../lifecycle/3-ui-baseline/component-reuse-redline.md`）
 
 复用红线的前提——新建前先扫这张表。这是「示例项目」的清单长相：
 
@@ -69,11 +69,11 @@
 | 状态色映射常量 | `src/shared/constants/{quote,order}.ts` | 状态 chip 取色 | 状态标签都从常量取，禁组件内硬写 |
 | `useListReturnState` | `src/composables/useListReturnState.js` | 列表→详情→返回保留 tab/筛选/滚动 | 所有列表页 |
 
-> 真要新建前，对照 `../component-reuse-redline.md` 第 4 节「建前自查清单」过一遍。
+> 真要新建前，对照 `../lifecycle/3-ui-baseline/component-reuse-redline.md` 第 4 节「建前自查清单」过一遍。
 
 ---
 
-## 3. 列表页结构（对应 `../interaction-conventions.md` 第 1、3、4 节）
+## 3. 列表页结构（对应 `../lifecycle/3-ui-baseline/interaction-conventions.md` 第 1、3、4 节）
 
 固定结构：工具栏 → 表格（统一行高、单行省略）→ 分页。操作列主操作 ≤2，其余收进「更多」下拉。文案全走 i18n。
 
@@ -122,7 +122,7 @@
 
 ---
 
-## 4. 新增 / 编辑用右侧抽屉（对应 `../interaction-conventions.md` 第 2 节）
+## 4. 新增 / 编辑用右侧抽屉（对应 `../lifecycle/3-ui-baseline/interaction-conventions.md` 第 2 节）
 
 PC 端用 `el-drawer`（右侧），**不用 `el-dialog`**。关闭即销毁，避免脏数据残留。宽度按密度选档。
 
@@ -152,7 +152,7 @@ PC 端用 `el-drawer`（右侧），**不用 `el-dialog`**。关闭即销毁，�
 
 ---
 
-## 5. 三态模板（对应 `../three-states.md`）
+## 5. 三态模板（对应 `../lifecycle/3-ui-baseline/three-states.md`）
 
 判定顺序：**error 优先于 empty**。列表三态封进列表组件最好；详情页常需手写三态。
 
@@ -201,7 +201,7 @@ try {
 
 ---
 
-## 6. 状态标签统一配色映射（对应 `../interaction-conventions.md` 第 6 节）
+## 6. 状态标签统一配色映射（对应 `../lifecycle/3-ui-baseline/interaction-conventions.md` 第 6 节）
 
 状态 chip 的颜色从一处常量映射取，禁组件内硬写：
 

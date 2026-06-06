@@ -57,9 +57,19 @@ const ALLOWED_ROOT_FILES = [
   'deploy.sh',
   // 文档
   'README.md',
+  'README.zh-CN.md',
   'LICENSE',
   'CLAUDE.md',
   'index.html',
+  // OSS 社区健康文件（任何公开仓库都该有，通用）
+  'AGENTS.md',
+  'CONTRIBUTING.md',
+  'CHANGELOG.md',
+  'ROADMAP.md',
+  'SECURITY.md',
+  'CODE_OF_CONDUCT.md',
+  'MAP.md',
+  '.gitattributes',
 ]
 
 // ── 可配置 2：允许在根目录存在的目录 ──────────────────────────────────────────
@@ -80,6 +90,12 @@ const ALLOWED_ROOT_DIRS = [
   '.github',
   '.claude',
   '.vscode',
+  // ↓ 本 kit 自身的 4 个语义桶（让 kit 在自己仓库里跑 check:structure 也自洽通过）。
+  //   你把脚本抄进自己项目后，这 4 个用不到，删掉即可。
+  'lifecycle',
+  'engineering',
+  'ops',
+  'examples',
 ]
 
 // ── 可配置 3：违规文件模式（正则）——匹配到即判违规 ──────────────────────────

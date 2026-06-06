@@ -7,8 +7,10 @@
  * 比对其余 locale 是否缺 key / 多 key。
  *
  * 目录结构假设：locales/<locale>/*.json（每种语言一个目录、按模块拆 json）。
- *   若你的项目是「每种语言一个大 json 文件」（locales/zh.json、locales/en.json），
- *   把 loadLocale() 改成直接读单文件 flatten 即可，主逻辑不变。
+ *   ⚠️ 开箱仅支持上面这种「目录布局」。若你的项目是「每种语言一个大 json 文件」
+ *   （locales/zh.json、locales/en.json —— 本 kit 的提纯来源项目用的就是这种），
+ *   当前脚本会把 en.json 当成「非目录的 locale」直接报错退出，**必须先改 loadLocale()**
+ *   改成读单文件再 flatten，才能跑（主逻辑/比对部分不用动）。不是加个参数就行。
  *
  * 用法：
  *   node quality-scripts/check-i18n-parity.cjs [localesDir]          # 严格模式：任何差异 exit 1

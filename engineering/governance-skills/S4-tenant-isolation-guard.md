@@ -131,7 +131,7 @@ owner: you
 
 本 skill 是「人读的纪律」。运行时有两道配套护栏自动落实它：
 
-1. **脚本层（能机检的）**：`npm run audit:tenant`（示例）粗扫缺 `tenantId` 的查询。
+1. **脚本层（能机检的）**：`npm run audit:tenant` —— ⚠️ **这是个占位脚本名，kit 没附带**，需你按自己的 ORM/查询风格实现（粗扫 `findMany/aggregate/$queryRaw` 等缺 `tenantId` 的调用）。别直接抄进 CI，会 `missing script`。kit 真正开箱可用的隔离护栏是下面第 2 条的语义层 reviewer。
 2. **语义层（脚本测不出的）**：只读子代理 **`tenant-isolation-reviewer`**（`.claude/agents/`）。
    - **何时调用**：在 service / route 下**新增/改完数据库查询后**，主 agent 主动调用它审一遍；或排查跨租户疑虑时显式调用。
    - 它只审不改（只有 `Read/Grep/Glob`），输出 `文件:行号` 证据 + 负向确认，修复仍交回主 agent。

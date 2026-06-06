@@ -9,7 +9,11 @@
  *   - 两个 PreToolUse 守卫        → <target>/.claude/hooks/
  *   - 三个只读 reviewer subagent   → <target>/.claude/agents/
  *   - settings.example.json        → <target>/.claude/settings.json（已存在则跳过，除非 --force）
- *   - 所有 SKILL.md（按 frontmatter name 落位）→ <target>/.claude/skills/<name>/SKILL.md
+ *   - lifecycle/ 下的 SKILL.md（按 frontmatter name 落位）→ <target>/.claude/skills/<name>/SKILL.md
+ *     ⚠️ 只扫 lifecycle/（competitive-analysis / requirement-discovery / prd-author / prd-review /
+ *        ui-baseline-check / architecture-review / experience-capture 这 7 个）。
+ *        governance-skills/ 的 S1-S11 是「方法论参考文档」（非 SKILL.md 形式），install 不落位，
+ *        需手动转成 SKILL.md——见 governance-skills/README 的三端转换表。
  *   - 一个 AGENTS.md 跨工具入口     → <target>/AGENTS.md（已存在则跳过）
  *
  * 其余（质量脚本 / package.json scripts / CI 模板 / 两本 registry）因为要并进你已有的

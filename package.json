@@ -3,12 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "license": "MIT",
-  "author": "Jing",
+  "author": "Jing Huang (@huangjing0526)",
+  "engines": {
+    "node": ">=18"
+  },
   "repository": {
     "type": "git",
-    "url": "<your-repo-url>"
+    "url": "git+https://github.com/huangjing0526/founder-saas-kit.git"
   },
-  "//repository": "建好远端仓库后把 <your-repo-url> 换成真实地址（如 https://github.com/<you>/founder-saas-kit）。",
+  "bugs": {
+    "url": "https://github.com/huangjing0526/founder-saas-kit/issues"
+  },
+  "homepage": "https://github.com/huangjing0526/founder-saas-kit#readme",
+  "//repository": "复用者 clone 后 rm -rf .git 并改成你自己的仓库地址（repository.url / bugs.url / homepage 三处）。",
   "keywords": [
     "claude-code",
     "ai-coding",
@@ -38,6 +45,7 @@
     "harness": "node engineering/quality-scripts/harness.mjs",
     "audit:health": "node engineering/quality-scripts/health-audit.cjs",
     "test:guards": "node engineering/enforcement/hooks/guard.test.cjs",
-    "test": "npm run test:guards && echo \"（占位）再配置你的应用测试，例如 vitest run / jest / node --test\" && exit 0"
+    "test": "npm run test:guards && echo \"（占位）再配置你的应用测试，例如 vitest run / jest / node --test\" && exit 0",
+    "test:integration": "echo \"（占位）配置你的集成测试，例如 vitest run tests/integration（需 test DB）；当前为占位，原样退出 0\" && exit 0"
   }
 }

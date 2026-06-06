@@ -25,6 +25,20 @@
 
 ---
 
+## 30 秒看它干活
+
+clone 下来,一条命令当场看护城河拦截(不是空谈"有守卫"):
+
+```bash
+npm run demo
+```
+
+演示:AI 想跑 `rm -rf /` → 🛑 守卫拦下 · 普通命令 → ✅ 放行 · 想改 `.env`/私钥/CI 文件 → 🛑 拦下 · 一个密钥溜进代码 → 🔦 扫描器抓出并打码 · 守卫回归自测 **42/42**。全程安全——危险命令只**喂给守卫看它拦不拦,从不真的执行**。
+
+> **本 kit 用自己治理自己**(dogfooding):提交守自己的 Git 纪律、根目录 [`AGENTS.md`](AGENTS.md) 即它对外的跨工具约定、CI 跑的就是它自带的门禁脚本(`npm run harness` 6 步全绿、314 条内链 0 断)。工具信自己,才值得你信。
+
+---
+
 ## 三层心智模型(从内到外)
 
 顶层只有 **4 个语义桶**,各对应一种心智:
@@ -104,6 +118,16 @@ petitive overy        baseline itecture  engineering/ + ops/      spective
 ---
 
 ## 怎么起一个新项目
+
+**一键接入(推荐)**——把守卫 / reviewer / skills / AGENTS.md 装进你已有的项目:
+
+```bash
+# 在 kit 目录里跑,装进你的目标项目(支持 claude / codex / cursor)
+node engineering/install.mjs --target ../my-app --tool claude
+node engineering/install.mjs --target ../my-app --dry-run   # 先看它会装什么
+```
+
+**或手动起一个新项目**:
 
 ```bash
 git clone <this-repo> my-new-project

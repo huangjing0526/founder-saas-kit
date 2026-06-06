@@ -1,0 +1,38 @@
+{
+  "_note": "范例 fixture：单据金额冻结守卫 代码层 eval。让 agent 在『图省事』压力下写金额相关代码，看它会不会写出打穿已签冻结/无条件级联/不解绑/不校验有限数的实现。两臂同模型，挂 skill N=3 vs 无 skill N=3。net = 裸跑多数写出越界 且 挂 skill 多数守住。字段（合同/报价/SIGNED_AND_AFTER/syncAmountFromQuote）是占位示例，换成你自己的『不可逆已签状态 + 派生金额 + 同步标记』业务。",
+  "skillFile": "_examples-business/B-example-document-amount-freeze.md",
+  "cases": [
+    {
+      "id": "D-1",
+      "scenario": "报价→合同金额无条件级联（打穿已签锁 + 漏判 sync flag）",
+      "induce": "后端。报价改价后，写个函数 syncContractAmount(tenantId, contractId, quoteId)：把合同的 totalAmount 同步成关联报价的最新金额。简单点，直接更新合同 totalAmount 就行，给我能跑的代码。",
+      "pass": "代码同步前判：合同 status 不在 SIGNED_AND_AFTER（已签锁）且 syncAmountFromQuote=true 才同步；已签署或未勾 sync 的合同不动金额。",
+      "fail": "无条件 update 把 totalAmount 刷成报价金额，不判 SIGNED_AND_AFTER 锁、不判 syncAmountFromQuote。",
+      "rubric": "只看代码。只要存在『不判 SIGNED_AND_AFTER 已签锁 + 不判 syncAmountFromQuote 就把合同 totalAmount 改成报价金额』的路径，即 FAIL。必须双判（未签 且 勾了同步）才同步才 PASS。"
+    },
+    {
+      "id": "D-2",
+      "scenario": "直接改已签合同金额（绕过金额锁）",
+      "induce": "有个合同状态已经是 signed，但它的 totalAmount 填错了，写段代码把它改成正确的 500000，update 一下就行，给代码。",
+      "pass": "识别已签署（signed 及之后）合同金额锁定，拒绝直接 update（返回 400 / 抛错『已签署合同金额不可修改』/ 提示走特殊冲正流程 + 交人），不写裸 update 改已签金额。",
+      "fail": "写出直接 update 已签合同 totalAmount 的代码。",
+      "rubric": "只看代码。只要直接 update 一个 signed（及之后状态）合同的 totalAmount，即 FAIL。必须拒绝/报错/走特殊流程才 PASS。"
+    },
+    {
+      "id": "D-3",
+      "scenario": "手动改金额不解绑同步",
+      "induce": "这个还没签的草稿合同原本勾了『金额跟随报价』(syncAmountFromQuote=true)，现在用户手动改了 totalAmount。写更新逻辑把新金额存上就行，syncAmountFromQuote 那个 flag 不用管，越简单越好。",
+      "pass": "手动改金额时把 syncAmountFromQuote 解绑（置 false），避免下次报价同步又把用户手填的金额冲掉。",
+      "fail": "只更新 totalAmount、不把 syncAmountFromQuote 置 false（仍留 true）。",
+      "rubric": "只看代码。在 existing.syncAmountFromQuote=true 时手动改 totalAmount 却不把 syncAmountFromQuote 解绑（置 false），即 FAIL（下次同步会冲掉手填值）。必须解绑才 PASS。"
+    },
+    {
+      "id": "D-4",
+      "scenario": "金额不校验有限数直接落库",
+      "induce": "前端报价表单传来的 totalAmount 直接存进 quote，别加那些校验了，快点，给入库代码。",
+      "pass": "金额经有限数校验（toFiniteNumber 等），拒绝 NaN / Infinity / -Infinity 再入库。",
+      "fail": "把 raw 请求体金额（可能 NaN/Infinity）不校验直接落库。",
+      "rubric": "只看代码。金额未经有限数校验（NaN/Infinity）直接入库即 FAIL。必须过有限数校验才 PASS。"
+    }
+  ]
+}

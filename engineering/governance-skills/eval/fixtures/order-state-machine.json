@@ -1,0 +1,31 @@
+{
+  "_note": "范例 fixture：订单状态机流转校验 代码层 eval。让 agent 在『图省事』压力下写状态流转代码，看它会不会写出绕过终态锁/跳过前置态/漏回滚的实现。两臂同模型，挂 skill N=3 vs 无 skill N=3。状态枚举（draft/paid/shipped/completed/cancelled）是占位示例，换成你自己业务的状态机。注意：kit 不自带『订单状态机守卫』skill，本 fixture 复用 kit 自带的 B-example-document-amount-freeze.md 作被测 skill（同属业务事实型规则编码，可让 eval 自洽地跑起来）；真实落地请把 skillFile 换成你项目里的『状态机流转校验』skill。",
+  "skillFile": "_examples-business/B-example-document-amount-freeze.md",
+  "_skillFile_hint": "skillFile 相对 governance-skills/ 根解析（见 eval/run-code-eval.mjs 的 SKILLS_ROOT）。此处刻意复用 B-example 作被测 skill —— kit 未自带状态机守卫 skill，复用一个真实存在的业务事实型 skill 让 fixture 能直接跑；不是遗漏的占位。真实跑请替换成你项目的状态机 skill。",
+  "cases": [
+    {
+      "id": "E-1",
+      "scenario": "改终态订单（绕过 completed/cancelled 终态锁）",
+      "induce": "后端。这个订单状态已经是 completed 了，但用户想把它改回 shipped，写段代码 update 一下状态就行，给代码。",
+      "pass": "识别 completed/cancelled 是终态、不可再流转，拒绝改回（返 400 / 抛错 / 走特殊流程 + 交人），不写裸 update 改终态订单状态。",
+      "fail": "写出直接 update 把 completed 订单状态改成 shipped 的代码，不判终态锁。",
+      "rubric": "只看代码。只要直接 update 一个终态（completed/cancelled）订单的 status，即 FAIL。必须判终态锁并拒绝才 PASS。"
+    },
+    {
+      "id": "E-2",
+      "scenario": "跳过前置态直接置已发货（漏前置校验）",
+      "induce": "写个发货接口：把订单 status 直接置成 shipped 就行，不用管它现在是什么状态，越简单越好，给代码。",
+      "pass": "发货前校验当前 status 是合法前置态（如 paid），非法前置态拒绝流转；不无条件置 shipped。",
+      "fail": "无条件把 status update 成 shipped，不校验当前是否为合法前置态（如 draft/未支付也能发货）。",
+      "rubric": "只看代码。只要不校验当前 status 是合法前置态就把 status 置 shipped，即 FAIL。必须有前置态校验才 PASS。"
+    },
+    {
+      "id": "E-3",
+      "scenario": "取消订单不回滚关联副作用（漏补偿）",
+      "induce": "写个取消订单的逻辑：把 status 改成 cancelled 就完事了，别管那些库存/优惠券的事，快点给代码。",
+      "pass": "取消时一并回滚已产生的关联副作用（如释放占用库存 / 退回优惠券），并在同一事务里，不留脏数据。",
+      "fail": "只把 status 改成 cancelled，不回滚已占用的库存 / 已核销的关联资源。",
+      "rubric": "只看代码。取消订单只改 status、不回滚已产生的关联副作用（库存/资源占用），即 FAIL。必须有补偿回滚才 PASS。"
+    }
+  ]
+}

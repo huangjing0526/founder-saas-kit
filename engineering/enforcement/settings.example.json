@@ -1,0 +1,47 @@
+{
+  "_comment": "把这两段 PreToolUse 配置合并进你项目的 .claude/settings.json。$CLAUDE_PROJECT_DIR 由 Claude Code 注入，指向项目根目录。把 enforcement/hooks/ 下的两个 .cjs 放到你项目的 scripts/hooks/ 后，路径按实际调整。",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/scripts/hooks/guard-dangerous-bash.cjs\"",
+            "timeout": 5000
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/scripts/hooks/guard-high-risk-edit.cjs\"",
+            "timeout": 5000
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "_comment": "可选：把读密钥/环境文件直接 deny 掉，作为 guard 之外的第二层兜底。此清单与 guard-high-risk-edit.cjs 的 SECRET_DENY 写禁清单保持一致（读/写两层同覆盖）。按需保留/删除。",
+    "deny": [
+      "Read(.env*)",
+      "Read(**/.env*)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)",
+      "Read(**/*.p12)",
+      "Read(**/*.pfx)",
+      "Read(**/*.keystore)",
+      "Read(**/*.jks)",
+      "Read(**/id_rsa)",
+      "Read(**/id_dsa)",
+      "Read(**/id_ecdsa)",
+      "Read(**/id_ed25519)",
+      "Read(**/secrets.yaml)",
+      "Read(**/secrets.yml)",
+      "Read(**/credentials*)"
+    ]
+  }
+}

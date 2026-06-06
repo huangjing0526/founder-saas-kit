@@ -154,7 +154,10 @@ petitive overy           baseline itecture  engineering/ + ops/      spective
 # Run inside the kit; installs into your target project (supports claude / codex / cursor)
 node engineering/install.mjs --target ../my-app --tool claude
 node engineering/install.mjs --target ../my-app --dry-run   # preview what it would install first
+node engineering/install.mjs --target ../my-app --update    # later: pull kit updates safely
 ```
+
+> **Upgrading later** (`--update`): the installer records a manifest of what it wrote, so an update only replaces files you *haven't* edited. Files you customized are never clobbered — the new kit version is written beside them as `<file>.new` for you to diff and merge.
 
 **Or bootstrap a new project manually:**
 

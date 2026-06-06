@@ -155,7 +155,10 @@ petitive overy        baseline itecture  engineering/ + ops/      spective
 # 在 kit 目录里跑,装进你的目标项目(支持 claude / codex / cursor)
 node engineering/install.mjs --target ../my-app --tool claude
 node engineering/install.mjs --target ../my-app --dry-run   # 先看它会装什么
+node engineering/install.mjs --target ../my-app --update     # 以后:安全拉 kit 的新版
 ```
+
+> **以后升级**(`--update`):安装时会记一份清单,升级只替换你**没改过**的文件;你定制过的绝不覆盖——kit 新版写成同名 `.new` 让你自己 diff 合并。
 
 **或手动起一个新项目**:
 

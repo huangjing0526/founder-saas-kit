@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ## [Unreleased]
 
 ### Added
+- **Evolvability: safe downstream upgrades.** `install.mjs` now writes a manifest (`<cfgdir>/.fsk-manifest.json`) recording the hash of each file as installed, and gains an `--update` mode: files you haven't edited get the new kit version, files you customized are never clobbered (the new version lands beside them as `<file>.new` for manual merge), newly-shipped files are added, and removed files are flagged as orphans (not deleted). Turns the kit from install-once into a tool you can keep pulling improvements from.
 - **Evolvability: self-claim verification.** New `check-self-claims.cjs` (wired into `harness`) asserts the stable, meaningful numbers printed in the READMEs/badges — guard-test count and runtime-dependency count — equal reality, so they can never silently drift. (Deliberately does not assert volatile internal counts like the harness step count; the first screen now says "all quality gates green" instead of a number that changes every time a gate is added.)
 - **Evolvability: MAP index anti-rot.** New `check-map-index.cjs` (wired into `harness`) verifies every doc (`.md`) is linked from `MAP.md` and every `MAP.md` link resolves — so the single-page index can't drift from the actual file tree as the kit grows.
 - English `README.md` as the primary entry, with the Chinese version moved to `README.zh-CN.md` and a language switcher linking the two.

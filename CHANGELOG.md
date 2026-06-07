@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ## [Unreleased]
 
 ### Added
+- **Spec-Driven Development (SDD) spine + spec↔code traceability.** New `methodology/spec-driven-development.md` frames the kit's existing lifecycle as the SDD loop (Specify=PRD/registry, Plan=architecture, Implement=guards, Validate=S8 + the new check). New `audit:spec` (`check-spec-coverage.cjs`, wired into `harness`) closes the loop back to the spec: it fails CI when a `[confirmed]` business rule has no code trace (A), code references an `@br <ID>` not in the registry (B), or a `[pending]` rule is already in code (C). Convention: rules carry IDs in `business-rules-registry.md`; code/tests tag `@br <ID>`. Skips projects without a live registry. Directly targets doc↔code drift (the deeper drift beyond the kit's own self-claims).
 - **`audit:tenant` is now a shipped script** (`check-tenant-scope.cjs`, wired into `harness`) — a heuristic scan for ORM queries (`findMany`/`aggregate`/`$queryRaw`/…) missing a `tenantId` filter. Closes the gap where S4 referenced `npm run audit:tenant` but no script shipped; the script layer now matches the semantic-layer `tenant-isolation-reviewer`. Gracefully skips projects with no ORM usage.
 
 ### Fixed

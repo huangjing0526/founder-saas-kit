@@ -37,6 +37,7 @@ const STEPS = [
   { label: '文档断链检查', script: 'lint:docs-links' },   // 示例：本目录 check-docs-links.cjs
   { label: 'i18n key 一致性', script: 'lint:i18n-parity' }, // 示例：本目录 check-i18n-parity.cjs
   { label: '多租户隔离粗扫', script: 'audit:tenant' },     // 示例：本目录 check-tenant-scope.cjs（无 ORM 用法的项目会优雅跳过）
+  { label: '规范↔代码追溯', script: 'audit:spec' },        // 示例：本目录 check-spec-coverage.cjs（SDD；无活业务规则登记表会优雅跳过）
   { label: 'schema 长文本字段', script: 'lint:schema' },  // 示例：本目录 check-schema-text.cjs
   { label: '项目结构检查', script: 'check:structure' },   // 示例：本目录 check-project-structure.js
   { label: '自我宣称校验', script: 'lint:self-claims' },  // 本仓专属：README/badge 写死的数字必须 == 实际（防漂移；抄进你项目会优雅跳过）

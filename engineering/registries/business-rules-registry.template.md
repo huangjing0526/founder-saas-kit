@@ -55,6 +55,15 @@ Every module section uses this exact header:
 
 Each conclusion must carry a `file:line` reference or a runnable command — never assert from memory.
 
+## Traceability (spec ↔ code)
+
+This registry is the **spec source of truth** in the kit's [Spec-Driven Development loop](../methodology/spec-driven-development.md). To keep it from drifting away from the code, give every rule a code trace one of two ways:
+
+- fill the **`Location (file:line)`** column, **and/or**
+- tag the implementing code/test with **`@br <ID>`** (e.g. `// @br ORDER-A-003`).
+
+`npm run audit:spec` (`check-spec-coverage.cjs`, in `harness`) then fails CI if a `[confirmed]` rule has neither trace, if code references an `@br` ID not in this registry, or if a `[pending]` rule is already in code.
+
 ---
 
 ## Change log

@@ -15,7 +15,6 @@ Where this kit is headed. This is a direction, not a promise — priorities shif
 ## Mid-term
 
 - **More quality scripts, more stacks** — the current `check-*` scripts lean Node/Prisma/MySQL. Add adapters or examples for Postgres, Drizzle, Python/Django, etc.
-- **A real `audit:tenant` script** — ship a minimal cross-tenant scope scanner so the script layer matches the (already-shipped) semantic reviewer.
 - **Fuller cross-tool install** — Codex/Cursor currently get skills + AGENTS.md; bring hooks/subagents adapters closer to parity with Claude.
 - **More eval fixtures** — expand `engineering/governance-skills/eval/fixtures/` toward the G-01~G-12 governance cases that are currently prose samples.
 

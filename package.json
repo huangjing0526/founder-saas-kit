@@ -46,6 +46,7 @@
     "install:cursor": "node engineering/install.mjs --tool cursor",
     "harness": "node engineering/quality-scripts/harness.mjs",
     "audit:health": "node engineering/quality-scripts/health-audit.cjs",
+    "audit:tenant": "node engineering/quality-scripts/check-tenant-scope.cjs .",
     "test:guards": "node engineering/enforcement/hooks/guard.test.cjs",
     "test:contract": "node engineering/contract.test.cjs",
     "test": "npm run test:guards && echo \"（占位）再配置你的应用测试，例如 vitest run / jest / node --test\" && exit 0",

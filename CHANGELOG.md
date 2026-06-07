@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-06-07
+
 ### Added
 - **Spec-Driven Development (SDD) spine + spec↔code traceability.** New `methodology/spec-driven-development.md` frames the kit's existing lifecycle as the SDD loop (Specify=PRD/registry, Plan=architecture, Implement=guards, Validate=S8 + the new check). New `audit:spec` (`check-spec-coverage.cjs`, wired into `harness`) closes the loop back to the spec: it fails CI when a `[confirmed]` business rule has no code trace (A), code references an `@br <ID>` not in the registry (B), or a `[pending]` rule is already in code (C). Convention: rules carry IDs in `business-rules-registry.md`; code/tests tag `@br <ID>`. Skips projects without a live registry. Directly targets doc↔code drift (the deeper drift beyond the kit's own self-claims).
 - **`audit:tenant` is now a shipped script** (`check-tenant-scope.cjs`, wired into `harness`) — a heuristic scan for ORM queries (`findMany`/`aggregate`/`$queryRaw`/…) missing a `tenantId` filter. Closes the gap where S4 referenced `npm run audit:tenant` but no script shipped; the script layer now matches the semantic-layer `tenant-isolation-reviewer`. Gracefully skips projects with no ORM usage.
@@ -39,5 +41,6 @@ First public release.
 - Repointed cross-references in `examples/ui-baseline.example.md` and `eval/README.md`; de-hardcoded the stale "314 internal links" dogfooding claim.
 - Clarified docstrings where docs over-promised vs. the script's out-of-the-box behavior: `check-i18n-parity.cjs`, `install.mjs`, `S4-tenant-isolation-guard.md`.
 
-[Unreleased]: https://github.com/huangjing0526/founder-saas-kit/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/huangjing0526/founder-saas-kit/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/huangjing0526/founder-saas-kit/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/huangjing0526/founder-saas-kit/releases/tag/v0.1.0

@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Added
+- **Distillation pipeline** — `methodology/distilling-from-real-projects.md` codifies how the kit grows from real-project experience (capture → 3-gate filter → routing table → promote via PR → release cadence), plus a `distillation-candidate` issue template (`from-dogfood` label) for fast capture. Makes "iterate by distilling from your project" a repeatable loop instead of a one-time origin story.
+
 ## [0.2.0] - 2026-06-07
 
 ### Added

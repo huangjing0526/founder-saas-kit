@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Added
+- **`audit:tenant` is now a shipped script** (`check-tenant-scope.cjs`, wired into `harness`) — a heuristic scan for ORM queries (`findMany`/`aggregate`/`$queryRaw`/…) missing a `tenantId` filter. Closes the gap where S4 referenced `npm run audit:tenant` but no script shipped; the script layer now matches the semantic-layer `tenant-isolation-reviewer`. Gracefully skips projects with no ORM usage.
+
 ### Fixed
 - Moved the CI **template** out of `.github/workflows/` to `.github/ci.example.yml`. GitHub runs every `.yml` under `workflows/` regardless of a `.example` name, so the template was executing on this repo and failing (its `cache: 'npm'` needs a lockfile this repo doesn't ship). Only the real `ci.yml` runs now.
 

@@ -137,7 +137,7 @@ petitive overy        baseline itecture  engineering/ + ops/      spective
 | **lifecycle/** `9-retrospective/` | 经验沉淀四问 · 复盘模板 · 四个沉淀落点(喂回前面阶段)+ skill | 通用 |
 | **engineering/** `governance-skills/` | 11 条治理 skill(S1-S11)+ 八段式模板 + 业务 skill 范例 + 可跑 eval | 脱敏后通用 |
 | **engineering/** `enforcement/` | `guard-dangerous-bash` / `guard-high-risk-edit` 两个守卫(+ `guard.test.cjs` 自测)+ 3 个只读 reviewer subagent + 挂载说明 | 通用 |
-| **engineering/** `quality-scripts/` | `check-secrets`(密钥扫描)/ `check-docs-links` / `check-project-structure` / `check-i18n-parity` 等 + `harness` + `health-audit` + **MECHANISMS.md(5 个机制)** | 跨栈/同栈 |
+| **engineering/** `quality-scripts/` | `check-secrets`(密钥扫描)/ `check-docs-links` / `check-project-structure` / `check-i18n-parity` / `check-tenant-scope`(多租户隔离粗扫)等 + `harness` + `health-audit` + **MECHANISMS.md(5 个机制)** | 跨栈/同栈 |
 | `.github/ci.example.yml` · `package.json` | 可抄的 CI 红线门禁模板(放在 workflows/ 外,免得 GitHub 把模板也当真 workflow 跑)+ npm script↔脚本映射 | 通用 |
 | **engineering/** `methodology/` | `anti-drift`(防漂移五原则,最高价值)/ `north-star-rules` / `common-pitfalls` / 事故台账骨架 | 通用 |
 | **engineering/** `registries/` | `business-rules-registry` + `production-readiness-registry` 两本活账本模板 | 通用 |

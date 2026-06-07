@@ -15,7 +15,7 @@ Downstream wires CI to these names. Renaming one is breaking.
 
 | Script | Contract |
 |---|---|
-| `lint:secrets` · `lint:docs-links` · `lint:schema` · `lint:migration` · `lint:i18n-parity` | each runs a `check-*` script; exit 0 = pass/skip, 1 = fail |
+| `lint:secrets` · `lint:docs-links` · `lint:schema` · `lint:migration` · `lint:i18n-parity` · `audit:tenant` | each runs a `check-*` script; exit 0 = pass/skip, 1 = fail |
 | `check:structure` | exit 0 = clean / warn-only, 1 = strict violation |
 | `harness` | aggregate gate; exit 0 = all green, 1 = any step failed |
 | `test:guards` | guard self-test; exit 0 = all pass |

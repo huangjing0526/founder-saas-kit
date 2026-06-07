@@ -136,7 +136,7 @@ petitive overy           baseline itecture  engineering/ + ops/      spective
 | **lifecycle/** `9-retrospective/` | Lessons-captured 4 questions · retro template · 4 settling points (fed back into earlier stages) + skill | Generic |
 | **engineering/** `governance-skills/` | 11 governance skills (S1-S11) + 8-section template + business-skill sample + runnable eval | Generic after redaction |
 | **engineering/** `enforcement/` | `guard-dangerous-bash` / `guard-high-risk-edit` two guards (+ `guard.test.cjs` self-test) + 3 read-only reviewer subagents + mounting guide | Generic |
-| **engineering/** `quality-scripts/` | `check-secrets` (secret scan) / `check-docs-links` / `check-project-structure` / `check-i18n-parity` etc. + `harness` + `health-audit` + **MECHANISMS.md (5 mechanisms)** | Cross-/same-stack |
+| **engineering/** `quality-scripts/` | `check-secrets` (secret scan) / `check-docs-links` / `check-project-structure` / `check-i18n-parity` / `check-tenant-scope` (multi-tenant isolation scan) etc. + `harness` + `health-audit` + **MECHANISMS.md (5 mechanisms)** | Cross-/same-stack |
 | `.github/ci.example.yml` · `package.json` | Copy-paste CI red-line gate template (lives outside `workflows/` so GitHub won't auto-run the template) + npm-script↔script wiring | Generic |
 | **engineering/** `methodology/` | `anti-drift` (5 anti-drift principles, highest value) / `north-star-rules` / `common-pitfalls` / incident-ledger skeleton | Generic |
 | **engineering/** `registries/` | `business-rules-registry` + `production-readiness-registry`, two living-ledger templates | Generic |

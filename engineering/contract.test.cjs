@@ -40,7 +40,7 @@ function mkTmp(tag) {
 
 // ── 1.1 公开 npm script 名 ────────────────────────────────────────────────
 const PUBLIC_SCRIPTS = [
-  'lint:secrets', 'lint:docs-links', 'lint:schema', 'lint:migration', 'lint:i18n-parity',
+  'lint:secrets', 'lint:docs-links', 'lint:schema', 'lint:migration', 'lint:i18n-parity', 'audit:tenant',
   'check:structure', 'harness', 'test:guards', 'install:claude', 'install:codex', 'install:cursor',
 ]
 const pkg = JSON.parse(fs.readFileSync(path.join(KIT, 'package.json'), 'utf8'))
@@ -71,6 +71,7 @@ const emptyProj = mkTmp('empty')
 const CHECKS = [
   'check-secrets.cjs', 'check-docs-links.cjs', 'check-schema-text.cjs',
   'check-migration-drift.cjs', 'check-i18n-parity.cjs', 'check-project-structure.js',
+  'check-tenant-scope.cjs',
 ]
 for (const f of CHECKS) {
   const r = spawnSync('node', [path.join(qs, f)], { cwd: emptyProj, encoding: 'utf8' })

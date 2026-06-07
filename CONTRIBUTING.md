@@ -27,6 +27,8 @@ Read these two first; they're the contract:
 
 If you're proposing something large (a new lifecycle stage, a new governance skill), **open an issue first** to align before writing — same as the kit's own S1 "plan-first" discipline.
 
+Most contributions come from **distilling a real project**: you hit a pattern while building, and it generalizes. There's a loop for that — capture it with the **`distillation-candidate`** issue template, and see [`methodology/distilling-from-real-projects.md`](engineering/methodology/distilling-from-real-projects.md) for the routing table + 3-gate filter (promote only what's generalizable, recurring, and survives redaction).
+
 *(中文)* 大改动（新生命周期阶段 / 新治理 skill）请先开 issue 对齐，再动手。
 
 ---

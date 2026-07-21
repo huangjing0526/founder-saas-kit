@@ -1,6 +1,6 @@
 ---
 name: prd-author
-description: Author production-quality PRDs with a clear business/technical boundary. Use when the user asks to write, draft, create, or scaffold a PRD, product requirements document, product spec, or feature spec. Also use when the user describes a new feature or capability and the natural next step is documenting it formally — even without explicitly saying "PRD". Auto-detects a project-level PRD-SPEC.md and defers to it when present; otherwise applies a generic 10-section structure with a Big 8 pitfall check. Critical: enforces (1) the business/technical boundary (section 7 is the wall), (2) the Big 8 high-frequency-pitfall checks, (3) every BR linked to a business-rules registry when one exists.
+description: 'Author production-quality PRDs with a clear business/technical boundary. Use when the user asks to write, draft, create, or scaffold a PRD, product requirements document, product spec, or feature spec. Also use when the user describes a new feature or capability and the natural next step is documenting it formally — even without explicitly saying "PRD". Auto-detects a project-level PRD-SPEC.md and defers to it when present; otherwise applies a generic 10-section structure with a Big 8 pitfall check. Critical: enforces (1) the business/technical boundary (section 7 is the wall), (2) the Big 8 high-frequency-pitfall checks, (3) every BR linked to a business-rules registry when one exists.'
 ---
 
 # PRD Author Skill
